@@ -13,7 +13,7 @@ const nodeFetch=(url:string,conf?)=>{
     return _nodeFetch(
         url,
         Object.assign(conf??{},{
-            timeout: 1000*12,
+            timeout: 1000*15,
             agent: proxy===undefined?proxy:HttpsProxyAgent(proxy) 
         })
     )
@@ -104,7 +104,15 @@ function getMaxPage(root:cheerio.Root){
         const mainList=[];
         for(let index=1;index<=indexMax;index++){
             console.log(`download page index ${index}`);
-            const getNewList= await getMainIndex(urlGetF,index);
+            let getNewList;
+            while(1){
+                try{
+                    getNewList= await getMainIndex(urlGetF,index);
+                    break;
+                }catch(e){
+                    console.log(e);
+                }
+            }
             mainList.push(...getNewList);
             const fileName=`${savePath}${md5(urlGetF('x'))}.json`;
             console.log(
@@ -116,5 +124,6 @@ function getMaxPage(root:cheerio.Root){
             );
             fs.writeFileSync(fileName,JSON.stringify(mainList));
         }
+        console.log('download over');
     })(get2CYMin1080P);
 })();

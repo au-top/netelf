@@ -18,12 +18,10 @@ async function nodeFetch(src:string){
         const loadPath=`${imgDirPath}/${downloadListFile}`;
         console.log(loadPath);
         const fData:Array<imgInfo>=JSON.parse( fs.readFileSync(loadPath).toString() );
-
         setInterval(()=>{
             fs.writeFileSync(loadPath,JSON.stringify(fData));
             console.log('re config');
         },1000*40);
-
         const downloadFile=fData.filter(v=>!v.download);
         const taskList=downloadFile.map((v)=>async ()=>{
             const imgData=(await (await nodeFetch(v.imgSrc)).buffer());

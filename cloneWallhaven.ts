@@ -103,6 +103,7 @@ function getMaxPage(root:cheerio.Root){
         console.log(`max page ${indexMax}`);
         const mainList=[];
         for(let index=1;index<=indexMax;index++){
+            console.log(`download page index ${index}`);
             const getNewList= await getMainIndex(urlGetF,index);
             mainList.push(...getNewList);
             const fileName=`${savePath}${md5(urlGetF('x'))}.json`;

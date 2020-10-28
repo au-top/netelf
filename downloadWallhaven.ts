@@ -5,7 +5,9 @@ import {randomGetProxy} from "./proxy"
 import {imgInfo} from './Wallhaven_d';
 import {asyncList} from "./asyncList";
 async function nodeFetch(src:string){
-    return _nodeFetch(src);
+    return _nodeFetch(src,{
+        timeout:1000*50
+    });
 }
 
 (async()=>{
@@ -34,7 +36,7 @@ async function nodeFetch(src:string){
         });
         asyncListElem.addList(...taskList);
         while(asyncListElem.list.length){
-            await asyncListElem.run(1);
+            await asyncListElem.run(4);
         }
     }
 })();

@@ -3,7 +3,6 @@ import fs from "fs"
 import md5 from "md5-node";
 import {randomGetProxy} from "./proxy"
 import {imgInfo} from './Wallhaven_d';
-import { json } from "body-parser";
 import {asyncList} from "./asyncList";
 async function nodeFetch(src:string){
     return _nodeFetch(src);

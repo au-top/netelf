@@ -9,9 +9,8 @@ async function nodeFetch(src:string){
         timeout:1000*50
     });
 }
-
 (async()=>{
-    const imgDirPath=`${__dirname}/img`;
+    const imgDirPath=`${__dirname}/listImg`;
     const downloadListFileList=fs.readdirSync(imgDirPath);
     const asyncListElem=new asyncList()
     for(const downloadListFile of downloadListFileList){
@@ -19,11 +18,6 @@ async function nodeFetch(src:string){
             continue;
         }
         const loadPath=`${imgDirPath}/${downloadListFile}`;
-        console.log(loadPath);
-        const loadFileName=(()=>{
-            let loadFileNameList=loadPath.split('.');
-            return loadFileNameList.splice(0,loadFileNameList.length-1).join('.');
-        })();
         const fData:Array<imgInfo>=JSON.parse( fs.readFileSync(loadPath).toString() );
         setInterval(()=>{
             fs.writeFileSync(loadPath,JSON.stringify(fData));
@@ -31,10 +25,10 @@ async function nodeFetch(src:string){
         },1000*40);
         const downloadFile=fData.filter(v=>!v.download);
         const taskList=downloadFile.map((v)=>async ()=>{
-            
             const imgData=(await (await nodeFetch(v.imgSrc)).buffer());
             const fileName=v.imgSrc.split('/').pop();
-            const fileSavePath=`${imgDirPath}/${loadFileName}/${fileName}`;
+
+            const fileSavePath=`${__dirname}/img/${fileName}`;
 
             console.log(`Download ~ ${fileName} size ${imgData.byteLength/1024}kb to ${fileSavePath}`);
             fs.writeFileSync(`${fileSavePath}`,imgData);
